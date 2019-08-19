@@ -4,7 +4,7 @@ IMAGE_TAG ?= "latest"
 
 all: ocs-operator ocs-must-gather ocs-registry
 
-.PHONY: clean ocs-operator ocs-must-gather ocs-registry
+.PHONY: clean ocs-operator ocs-must-gather ocs-registry gen-csv source-manifests
 
 deps-update:
 	GO111MODULE=on go mod tidy && go mod vendor
@@ -16,6 +16,14 @@ ocs-operator:
 ocs-must-gather:
 	@echo "Building the ocs-must-gather image"
 	$(IMAGE_BUILD_CMD) build -f must-gather/Dockerfile -t quay.io/$(REGISTRY_NAMESPACE)/ocs-must-gather:$(IMAGE_TAG) must-gather/
+
+source-manifests:
+	@echo "Sourcing CSV and CRD manifests from component-level operators"
+	hack/source-manifests.sh
+
+gen-csv:
+	@echo "Generating unified CSV from sourced component-level operators"
+	hack/generate-unified-csv.sh
 
 ocs-registry:
 	@echo "Building the ocs-registry image"
