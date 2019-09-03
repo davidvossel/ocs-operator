@@ -1,4 +1,6 @@
 IMAGE_BUILD_CMD ?= "docker"
+IMAGE_BUILD_SUB_CMD ?= "build"
+IMAGE_BUILD_ARGS ?= "--no-cache"
 REGISTRY_NAMESPACE ?= "ocs-dev"
 IMAGE_TAG ?= "latest"
 OPERATOR_SDK_VERSION="v0.10.0"
@@ -30,7 +32,7 @@ operator-sdk:
 
 ocs-operator: operator-sdk
 	@echo "Building the ocs-operator image"
-	$(TOOLS_DIR)/$(OPERATOR_SDK) build --go-build-args="-mod=vendor" --image-builder=$(IMAGE_BUILD_CMD) quay.io/$(REGISTRY_NAMESPACE)/ocs-operator:$(IMAGE_TAG)
+	$(TOOLS_DIR)/$(OPERATOR_SDK) build --go-build-args="-mod=vendor" --image-build-args="$(IMAGE_BUILD_ARGS)" --image-builder=$(IMAGE_BUILD_CMD) quay.io/$(REGISTRY_NAMESPACE)/ocs-operator:$(IMAGE_TAG)
 
 ocs-must-gather:
 	@echo "Building the ocs-must-gather image"

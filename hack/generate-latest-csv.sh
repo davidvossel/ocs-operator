@@ -13,7 +13,7 @@ ROOK_VERSION="v1.0.0-586.g8abcf37.dirty "
 export CSV_CHECKSUM_OUTFILE="hack/latest-csv-checksum.md5"
 
 # Current DEV version of the CSV
-export CSV_VERSION=0.0.1
+export CSV_VERSION=$LATEST_CSV_VERSION
 
 # Current dependency images our DEV CSV are pinned to
 export ROOK_IMAGE=rook/ceph:$ROOK_VERSION

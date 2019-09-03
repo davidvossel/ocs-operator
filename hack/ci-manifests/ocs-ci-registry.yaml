@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ocs-ci-registry
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ocs-ci-registry
+    spec:
+      containers:
+      - name: ocs-ci-registry
+        image: registry:2.7.1
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ocs-ci-registry
+  name: ocs-ci-registry
+spec:
+  ports:
+  - name: 5000-tcp
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: ocs-ci-registry
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

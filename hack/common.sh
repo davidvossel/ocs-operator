@@ -2,6 +2,7 @@
 
 IMAGE_RUN_CMD="${IMAGE_RUN_CMD:-docker run --rm -it}"
 
+LATEST_CSV_VERSION=0.0.1
 OUTDIR="build/_output"
 OUTDIR_TEMPLATES="$OUTDIR/csv-templates"
 OUTDIR_CRDS="$OUTDIR_TEMPLATES/crds"

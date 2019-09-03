@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ocs-ci-builder
+spec:
+  containers:
+  - command:
+    - "/usr/bin/sleep"
+    - "86400"
+    image: quay.io/dvossel/containerized-builder:v0.0.2
+    imagePullPolicy: Always
+    name: container-00
+    securityContext:
+      privileged: true
+      runAsUser: 0
+  priority: 0
+  restartPolicy: Never
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
