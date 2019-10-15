@@ -23,6 +23,21 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
+const PackageName = "ocs-operator"
+
+const DefaultPackageChannel = "alpha"
+
+type registryPackageChannel struct {
+	Name       string `json:"name"`
+	CurrentCSV string `json:"currentCSV"`
+}
+
+type registryPackage struct {
+	PackageName    `json:"packageName"`
+	Channels       []registryPackageChannel `json:"channels"`
+	DefaultChannel `json:"defaultChannel",omitempty`
+}
+
 type csvClusterPermissions struct {
 	ServiceAccountName string              `json:"serviceAccountName"`
 	Rules              []rbacv1.PolicyRule `json:"rules"`
