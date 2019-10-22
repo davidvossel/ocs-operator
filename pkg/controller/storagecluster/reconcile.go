@@ -128,6 +128,10 @@ func (r *ReconcileStorageCluster) Reconcile(request reconcile.Request) (reconcil
 		return reconcile.Result{}, err
 	}
 
+	if instance.Status.FailureDomain == "" {
+		instance.Status.FailureDomain = determineFailureDomain(instance.Status.NodeTopologies)
+	}
+
 	// Check for StorageClusterInitialization
 	scinit := &ocsv1.StorageClusterInitialization{}
 	err = r.client.Get(context.TODO(), request.NamespacedName, scinit)
@@ -137,14 +141,6 @@ func (r *ReconcileStorageCluster) Reconcile(request reconcile.Request) (reconcil
 
 			scinit.Name = request.Name
 			scinit.Namespace = request.Namespace
-			scinit.Spec.FailureDomain = determineFailureDomain(instance.Status.NodeTopologies)
-			// Set StorageCluster instance as the owner and controller
-			if err = controllerutil.SetControllerReference(instance, scinit, r.scheme); err != nil {
-				return reconcile.Result{}, err
-			}
-
-			// Copy the customized Resources into scinit
-			scinit.Spec.Resources = instance.Spec.Resources
 
 			err = r.client.Create(context.TODO(), scinit)
 			switch {
